@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "food_logs",
+  "info": {
+    "singularName": "food-log",
+    "pluralName": "food-logs",
+    "displayName": "FoodLog"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "mealType": {
+      "type": "string",
+      "required": true
+    },
+    "calories": {
+      "type": "integer",
+      "required": true
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "food_logs"
+    }
+  }
+}
