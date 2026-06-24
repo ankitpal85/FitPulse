@@ -18,7 +18,7 @@ export default function Input({ label, type = 'text', value, onChange, placehold
             {label && (
                 <label className='block text-sm font-medium text-slate-700 dark:text-slate-300'>
                     {label}
-                    {required && <span className='text-red-500 ml-1'>*</span>}
+                    {required && <span className='text-rose-500 ml-1'>*</span>}
                 </label>
             )}
             <input
@@ -28,7 +28,7 @@ export default function Input({ label, type = 'text', value, onChange, placehold
                 placeholder={placeholder}
                 min={min}
                 max={max}
-                className='w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200'
+                className='w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/[0.1] bg-white dark:bg-white/[0.05] text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-violet-500 transition-all duration-300'
             />
         </div>
     );

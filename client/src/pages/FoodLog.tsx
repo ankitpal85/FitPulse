@@ -127,7 +127,7 @@ const FoodLog = () => {
           </div>
           <div className="text-right">
             <p className="text-sm text-slate-500 dark:text-slate-400">Today's Total</p>
-            <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{totalCalories} kcal</p>
+            <p className="text-xl font-bold gradient-text">{totalCalories} kcal</p>
           </div>
         </div>
       </div>
@@ -135,14 +135,14 @@ const FoodLog = () => {
       <div className="page-content-grid">
         {/* Quick Add Section */}
         {!showForm && (
-          <div className="space-y-4">
+          <div className="space-y-4 animate-fade-in">
             <Card>
               <h3 className="font-semibold text-slate-700 dark:text-slate-200 mb-3">Quick Add</h3>
               <div className="flex flex-wrap gap-2">
                 {quickActivitiesFoodLog.map((activity) => (
                   <button
                     onClick={() => handleQuickAdd(activity.name)}
-                    className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors"
+                    className="px-4 py-2 bg-slate-100 dark:bg-white/[0.05] hover:bg-violet-500/10 dark:hover:bg-violet-500/10 hover:text-violet-600 dark:hover:text-violet-400 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 transition-all duration-300 border border-transparent hover:border-violet-500/20"
                     key={activity.name}>
                     {activity.emoji} {activity.name}
                   </button>
@@ -162,9 +162,12 @@ const FoodLog = () => {
             <input onChange={handleImageChange} type="file"
               accept="image/*" hidden ref={inputRef} />
             {loading && (
-              <div className="fixed inset-0 bg-slate-100/50 dark:bg-slate-900/50 backdrop-blur flex items-center justify-center z-50">
+              <div className="fixed inset-0 bg-slate-100/50 dark:bg-[#0a0a0f]/80 backdrop-blur-md flex items-center justify-center z-50">
                 <div className="flex flex-col items-center gap-3">
-                  <Loader2Icon className="size-8 text-emerald-600 dark:text-emerald-400 animate-spin" />
+                  <div className="relative">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 blur-xl opacity-30 animate-pulse" />
+                    <Loader2Icon className="size-8 text-violet-500 animate-spin relative" />
+                  </div>
                   <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">Analyzing image...</p>
                 </div>
               </div>
@@ -174,7 +177,7 @@ const FoodLog = () => {
 
         {/* Add Form */}
         {showForm && (
-          <Card className="border-2 border-emerald-200 dark:border-emerald-800">
+          <Card className="border-violet-500/30 dark:border-violet-500/30 animate-fade-in">
             <h3 className="font-semibold text-slate-800 dark:text-white mb-4">New Food Entry</h3>
             <form className="space-y-4" onSubmit={handleSubmit} >
               <Input label="Food Name" value={formData.name} onChange={(v) => setFormData({ ...formData, name: v.toString() })}
@@ -206,14 +209,14 @@ const FoodLog = () => {
         {/* Entries List */}
         {entries.length === 0 ? (
           <Card className="text-center py-12">
-            <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-white/[0.05] flex items-center justify-center mx-auto mb-4">
               <UtensilsCrossedIcon className="size-8 text-slate-400 dark:text-slate-500" />
             </div>
             <h3 className="font-semibold text-slate-700 dark:text-slate-200 mb-2">No food logged today</h3>
             <p className="text-slate-500 dark:text-slate-400 text-sm">Start tracking your meals to stay on target</p>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 stagger-children">
             {['breakfast', 'lunch', 'dinner', 'snack'].map((mealType) => {
               const mealTypeKey = mealType as keyof typeof groupEntries;
               if (!groupEntries[mealTypeKey]) return null;
@@ -246,7 +249,7 @@ const FoodLog = () => {
                           <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{entry.calories} kcal</span>
                           <button
                             onClick={() => handleDelete(entry?.documentId || '')}
-                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                            className="p-2 text-rose-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all duration-300">
                             <Trash2Icon className="w-4 h-4" />
                           </button>
                         </div>

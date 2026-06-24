@@ -82,10 +82,10 @@ const Onboarding = () => {
       {/* Header */}
       <div className="p-6 pt-12 onboarding-wrapper">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-violet-500/20">
             <PersonStanding className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">
+          <h1 className="text-2xl font-bold gradient-text">
             FitPulse
           </h1>
         </div>
@@ -96,7 +96,7 @@ const Onboarding = () => {
       <div className="px-6 mb-8 onboarding-wrapper">
         <div className="flex gap-2 max-w-2xl">
           {[1, 2, 3].map((s) => (
-            <div key={s} className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${s <= step ? "bg-emerald-500" : "bg-slate-200 dark:bg-slate-800"}`} />
+            <div key={s} className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${s <= step ? "bg-gradient-to-r from-violet-500 to-cyan-400" : "bg-slate-200 dark:bg-white/[0.08]"}`} />
           ))}
         </div>
         <p className="text-sm text-slate-400 mt-3">Step {step} of {totalSteps}</p>
@@ -105,10 +105,10 @@ const Onboarding = () => {
       {/* Form content */}
       <div className="flex-1 px-6 onboarding-wrapper">
         {step === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fade-in">
             <div className="flex items-center gap-4 mb-8">
-              <div className="size-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800 flex items-center justify-center">
-                <User className="size-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="size-12 rounded-xl bg-violet-500/10 dark:bg-violet-500/15 border border-violet-500/20 dark:border-violet-500/20 flex items-center justify-center">
+                <User className="size-6 text-violet-600 dark:text-violet-400" />
               </div>
               <div>
                 <h2 className="text-lg font-semibold text-slate-800 dark:text-white">How old are you?</h2>
@@ -124,10 +124,10 @@ const Onboarding = () => {
         )}
 
         {step === 2 && (
-          <div className="space-y-6 onboarding-wrapper">
+          <div className="space-y-6 onboarding-wrapper animate-fade-in">
             <div className="flex items-center gap-4 mb-8">
-              <div className="size-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800 flex items-center justify-center">
-                <ScaleIcon className="size-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="size-12 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/15 border border-cyan-500/20 dark:border-cyan-500/20 flex items-center justify-center">
+                <ScaleIcon className="size-6 text-cyan-600 dark:text-cyan-400" />
               </div>
               <div>
                 <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Your measurements</h2>
@@ -151,9 +151,9 @@ const Onboarding = () => {
         )}
 
         {step === 3 && (
-          <div className="space-y-6 onboarding-wrapper">
+          <div className="space-y-6 onboarding-wrapper animate-fade-in">
             <div className="flex items-center gap-4 mb-8">
-              <div className="size-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800 flex items-center justify-center">
+              <div className="size-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 dark:border-emerald-500/20 flex items-center justify-center">
                 <Target className="size-6 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div>
@@ -189,7 +189,7 @@ const Onboarding = () => {
                       dailyCalorieBurn: burn,
                     });
                   }}
-                  className={`onboarding-option-btn ${formData.goal === option.value ? 'ring-2 ring-emerald-500' : ''}`}
+                  className={`onboarding-option-btn ${formData.goal === option.value ? 'ring-2 ring-violet-500 dark:ring-violet-400' : ''}`}
                 >
                   <span className="text-base text-slate-700 dark:text-slate-200">
                     {option.label}
@@ -198,7 +198,7 @@ const Onboarding = () => {
               ))}
             </div>
 
-            <div className="border-t border-slate-200 dark:border-slate-700 my-6 max-w-lg">
+            <div className="border-t border-slate-200 dark:border-white/[0.08] my-6 max-w-lg">
               {/* Daily targets */}
               <div className="space-y-8 max-w-lg">
                 <h3 className="text-md font-medium text-slate-800 dark:text-white mb-4 mt-6">

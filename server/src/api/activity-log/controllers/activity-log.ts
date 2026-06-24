@@ -1,5 +1,8 @@
 /**
  * activity-log controller
+ *
+ * Uses Strapi 5 documentService (entityService is deprecated in v5).
+ * The /:id param in URLs is the documentId in Strapi 5.
  */
 
 import { factories } from '@strapi/strapi';
@@ -16,7 +19,7 @@ export default factories.createCoreController('api::activity-log.activity-log', 
     if (!body.name || typeof body.name !== 'string' || !body.name.trim()) {
       return ctx.badRequest('Activity name is required');
     }
-    if (!body.duration || typeof body.duration !== 'number' || body.duration <= 0) {
+    if (body.duration === undefined || body.duration === null || typeof body.duration !== 'number' || body.duration <= 0) {
       return ctx.badRequest('Valid duration is required');
     }
     if (body.calories !== undefined && (typeof body.calories !== 'number' || body.calories < 0)) {
@@ -25,42 +28,40 @@ export default factories.createCoreController('api::activity-log.activity-log', 
 
     body.users_permissions_user = user.id;
 
-    const entry = await strapi.entityService.create(
-      "api::activity-log.activity-log", {
-        data: body,
-        populate: ["users_permissions_user"]
-      }
-    );
-    return entry;
+    const entry = await strapi.documents('api::activity-log.activity-log').create({
+      data: body,
+      populate: ['users_permissions_user'],
+    });
+    ctx.status = 201;
+    ctx.body = entry;
+    return;
   },
 
   async find(ctx) {
     const user = ctx.state.user;
     if (!user) return ctx.unauthorized('Login required');
 
-    const result = await strapi.entityService.findMany(
-      "api::activity-log.activity-log", {
-        filters: { users_permissions_user: user.id },
-        populate: ["users_permissions_user"],
-        sort: { createdAt: 'desc' },
-      }
-    );
-    return result;
+    const result = await strapi.documents('api::activity-log.activity-log').findMany({
+      filters: { users_permissions_user: { id: { $eq: user.id } } } as any,
+      populate: ['users_permissions_user'],
+      sort: 'createdAt:desc',
+    });
+    return { data: result };
   },
 
   async findOne(ctx) {
     const user = ctx.state.user;
     if (!user) return ctx.unauthorized('Login required');
-    const { id } = ctx.params;
+    const { id } = ctx.params; // id is the documentId in Strapi 5
 
-    const result = await strapi.entityService.findMany(
-      "api::activity-log.activity-log", {
-        filters: { id, users_permissions_user: user.id },
-        populate: ["users_permissions_user"]
-      }
-    );
-    if (!result.length) return ctx.notFound("Not found or not yours");
-    return result[0];
+    const entry = await strapi.documents('api::activity-log.activity-log').findOne({
+      documentId: id,
+      populate: ['users_permissions_user'],
+    });
+
+    if (!entry) return ctx.notFound('Not found');
+    if ((entry as any).users_permissions_user?.id !== user.id) return ctx.forbidden('Not yours');
+    return { data: entry };
   },
 
   async update(ctx) {
@@ -68,23 +69,22 @@ export default factories.createCoreController('api::activity-log.activity-log', 
     if (!user) return ctx.unauthorized('Login required');
     const { id } = ctx.params;
 
-    const existing = await strapi.entityService.findMany(
-      "api::activity-log.activity-log", {
-        filters: { documentId: id, users_permissions_user: user.id },
-      }
-    );
-    if (!existing.length) return ctx.notFound("Not found or not yours");
+    const existing = await strapi.documents('api::activity-log.activity-log').findOne({
+      documentId: id,
+      populate: ['users_permissions_user'],
+    });
+    if (!existing) return ctx.notFound('Not found');
+    if ((existing as any).users_permissions_user?.id !== user.id) return ctx.forbidden('Not yours');
 
     const body = ctx.request.body?.data || {};
     body.users_permissions_user = user.id;
 
-    const entry = await strapi.entityService.update(
-      "api::activity-log.activity-log", existing[0].id, {
-        data: body,
-        populate: ["users_permissions_user"]
-      }
-    );
-    return entry;
+    const entry = await strapi.documents('api::activity-log.activity-log').update({
+      documentId: id,
+      data: body,
+      populate: ['users_permissions_user'],
+    });
+    return { data: entry };
   },
 
   async delete(ctx) {
@@ -92,16 +92,16 @@ export default factories.createCoreController('api::activity-log.activity-log', 
     if (!user) return ctx.unauthorized('Login required');
     const { id } = ctx.params;
 
-    const existing = await strapi.entityService.findMany(
-      "api::activity-log.activity-log", {
-        filters: { documentId: id, users_permissions_user: user.id },
-      }
-    );
-    if (!existing.length) return ctx.notFound("Not found or not yours");
+    const existing = await strapi.documents('api::activity-log.activity-log').findOne({
+      documentId: id,
+      populate: ['users_permissions_user'],
+    });
+    if (!existing) return ctx.notFound('Not found');
+    if ((existing as any).users_permissions_user?.id !== user.id) return ctx.forbidden('Not yours');
 
-    const entry = await strapi.entityService.delete(
-      "api::activity-log.activity-log", existing[0].id
-    );
-    return entry;
+    const entry = await strapi.documents('api::activity-log.activity-log').delete({
+      documentId: id,
+    });
+    return { data: entry };
   },
 }));

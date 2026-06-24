@@ -64,25 +64,29 @@ const Login = () => {
   }
 
   return (
-    <main className="login-page-container">
-      <form onSubmit={handleSubmit}>
-        <h2 className="text-3xl font-medium text-gray-900 dark:text-white">
-          {state === 'login' ? "Sign In" : "Sign up"}
+    <main className="login-page-container relative overflow-hidden">
+      {/* Background gradient orbs */}
+      <div className="absolute top-1/4 -left-32 w-64 h-64 bg-violet-500/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl" />
+
+      <form onSubmit={handleSubmit} className="relative z-10 animate-fade-in">
+        <h2 className="text-3xl font-bold gradient-text">
+          {state === 'login' ? "Welcome Back" : "Get Started"}
         </h2>
 
-        <p className="mt-2 text-sm text-gray-500/90 dark:text-gray-400">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           {state === 'login'
-            ? 'Please enter email and password to access.'
-            : 'Please enter your details to create an account.'}
+            ? 'Sign in to continue your fitness journey.'
+            : 'Create your account to start tracking.'}
         </p>
 
         {/* Username */}
         {state !== 'login' && (
-          <div className="mt-4 relative">
-            <label htmlFor="username" className="font-medium text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-5 relative">
+            <label htmlFor="username" className="font-medium text-sm text-slate-700 dark:text-slate-300">
               Username
             </label>
-            <AtSignIcon className="absolute left-3 top-10 text-gray-400 size-4.5" />
+            <AtSignIcon className="absolute left-3 top-10 text-slate-400 size-4.5" />
             <input
               id="username"
               onChange={(e) => setUsername(e.target.value)}
@@ -96,11 +100,11 @@ const Login = () => {
         )}
 
         {/* Email */}
-        <div className="mt-4 relative">
-          <label className="font-medium text-sm text-gray-700 dark:text-gray-300" htmlFor="email">
+        <div className="mt-5 relative">
+          <label className="font-medium text-sm text-slate-700 dark:text-slate-300" htmlFor="email">
             Email
           </label>
-          <MailIcon className="absolute left-3 top-10 text-gray-400 size-4.5" />
+          <MailIcon className="absolute left-3 top-10 text-slate-400 size-4.5" />
           <input
             id="email"
             onChange={(e) => setEmail(e.target.value)}
@@ -113,11 +117,11 @@ const Login = () => {
         </div>
 
         {/* Password */}
-        <div className="mt-4 relative">
-          <label htmlFor="password" className="font-medium text-sm text-gray-700 dark:text-gray-300">
+        <div className="mt-5 relative">
+          <label htmlFor="password" className="font-medium text-sm text-slate-700 dark:text-slate-300">
             Password
           </label>
-          <LockIcon className="absolute left-3 top-10 text-gray-400 size-4.5" />
+          <LockIcon className="absolute left-3 top-10 text-slate-400 size-4.5" />
           <input
             id="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -129,7 +133,7 @@ const Login = () => {
           />
           <button
             type="button"
-            className="absolute right-3 top-10 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-10 text-slate-400 hover:text-violet-400 transition-colors"
             onClick={() => setShowPassword((p) => !p)}
           >
             {showPassword ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
@@ -140,34 +144,34 @@ const Login = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="login-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="login-button"
         >
           {isSubmitting ? (
             <span className="animate-pulse">Processing...</span>
-          ) : state === "login" ? "Login" : "Sign up"}
+          ) : state === "login" ? "Sign In" : "Create Account"}
         </button>
 
         {/* Toggle */}
         {state === 'login' ? (
-          <p className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-center py-6 text-sm text-slate-500 dark:text-slate-400">
             Don't have an account?
             <button
               type="button"
               onClick={() => toggleState('signup')}
-              className="ml-1 text-green-600 hover:underline"
+              className="ml-1 text-violet-600 dark:text-violet-400 hover:underline font-medium"
             >
               Sign up
             </button>
           </p>
         ) : (
-          <p className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-center py-6 text-sm text-slate-500 dark:text-slate-400">
             Already have an account?
             <button
               type="button"
               onClick={() => toggleState('login')}
-              className="ml-1 text-green-600 hover:underline"
+              className="ml-1 text-violet-600 dark:text-violet-400 hover:underline font-medium"
             >
-              Login
+              Sign in
             </button>
           </p>
         )}

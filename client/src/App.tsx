@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react"
 import { Route, Routes, Navigate } from "react-router-dom"
 import { useAppContext } from "./context/AppContext"
 import Loading from "./components/Loading"
+import ErrorBoundary from "./components/ErrorBoundary"
 import { Toaster } from "react-hot-toast"
 
 // Lazy load pages for code splitting
@@ -32,31 +33,33 @@ const App = () => {
         }}
       />
 
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route
-            path="/login"
-            element={!user ? <Login /> : <Navigate to="/" />}
-          />
+      <ErrorBoundary>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/" />}
+            />
 
-          <Route
-            path="/onboarding"
-            element={user && !onboardingCompleted ? <Onboarding /> : <Navigate to="/" />}
-          />
+            <Route
+              path="/onboarding"
+              element={user && !onboardingCompleted ? <Onboarding /> : <Navigate to="/" />}
+            />
 
-          <Route
-            path="/"
-            element={user ? (onboardingCompleted ? <Layout /> : <Navigate to="/onboarding" />) : <Navigate to="/login" />}
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="food" element={<FoodLog />} />
-            <Route path="activity" element={<Activity />} />
-            <Route path="profile" element={<Profile />} />
-          </Route>
+            <Route
+              path="/"
+              element={user ? (onboardingCompleted ? <Layout /> : <Navigate to="/onboarding" />) : <Navigate to="/login" />}
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="food" element={<FoodLog />} />
+              <Route path="activity" element={<Activity />} />
+              <Route path="profile" element={<Profile />} />
+            </Route>
 
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Suspense>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </>
   )
 }

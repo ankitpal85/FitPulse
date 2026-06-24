@@ -1,5 +1,8 @@
 /**
  * food-log controller
+ *
+ * Uses Strapi 5 documentService (entityService is deprecated in v5).
+ * The /:id param in URLs is the documentId in Strapi 5.
  */
 
 import { factories } from '@strapi/strapi';
@@ -16,7 +19,7 @@ export default factories.createCoreController('api::food-log.food-log', ({ strap
     if (!body.name || typeof body.name !== 'string' || !body.name.trim()) {
       return ctx.badRequest('Food name is required');
     }
-    if (!body.calories || typeof body.calories !== 'number' || body.calories < 0) {
+    if (body.calories === undefined || body.calories === null || typeof body.calories !== 'number' || body.calories < 0) {
       return ctx.badRequest('Valid calorie count is required');
     }
     if (!body.mealType || !['breakfast', 'lunch', 'dinner', 'snack'].includes(body.mealType)) {
@@ -25,42 +28,40 @@ export default factories.createCoreController('api::food-log.food-log', ({ strap
 
     body.users_permissions_user = user.id;
 
-    const entry = await strapi.entityService.create(
-      "api::food-log.food-log", {
-        data: body,
-        populate: ["users_permissions_user"]
-      }
-    );
-    return entry;
+    const entry = await strapi.documents('api::food-log.food-log').create({
+      data: body,
+      populate: ['users_permissions_user'],
+    });
+    ctx.status = 201;
+    ctx.body = entry;
+    return;
   },
 
   async find(ctx) {
     const user = ctx.state.user;
     if (!user) return ctx.unauthorized('Login required');
 
-    const result = await strapi.entityService.findMany(
-      "api::food-log.food-log", {
-        filters: { users_permissions_user: user.id },
-        populate: ["users_permissions_user"],
-        sort: { createdAt: 'desc' },
-      }
-    );
-    return result;
+    const result = await strapi.documents('api::food-log.food-log').findMany({
+      filters: { users_permissions_user: { id: { $eq: user.id } } } as any,
+      populate: ['users_permissions_user'],
+      sort: 'createdAt:desc',
+    });
+    return { data: result };
   },
 
   async findOne(ctx) {
     const user = ctx.state.user;
     if (!user) return ctx.unauthorized('Login required');
-    const { id } = ctx.params;
+    const { id } = ctx.params; // id is the documentId in Strapi 5
 
-    const result = await strapi.entityService.findMany(
-      "api::food-log.food-log", {
-        filters: { id, users_permissions_user: user.id },
-        populate: ["users_permissions_user"]
-      }
-    );
-    if (!result.length) return ctx.notFound("Not found or not yours");
-    return result[0];
+    const entry = await strapi.documents('api::food-log.food-log').findOne({
+      documentId: id,
+      populate: ['users_permissions_user'],
+    });
+
+    if (!entry) return ctx.notFound('Not found');
+    if ((entry as any).users_permissions_user?.id !== user.id) return ctx.forbidden('Not yours');
+    return { data: entry };
   },
 
   async update(ctx) {
@@ -68,24 +69,22 @@ export default factories.createCoreController('api::food-log.food-log', ({ strap
     if (!user) return ctx.unauthorized('Login required');
     const { id } = ctx.params;
 
-    // Verify ownership
-    const existing = await strapi.entityService.findMany(
-      "api::food-log.food-log", {
-        filters: { documentId: id, users_permissions_user: user.id },
-      }
-    );
-    if (!existing.length) return ctx.notFound("Not found or not yours");
+    const existing = await strapi.documents('api::food-log.food-log').findOne({
+      documentId: id,
+      populate: ['users_permissions_user'],
+    });
+    if (!existing) return ctx.notFound('Not found');
+    if ((existing as any).users_permissions_user?.id !== user.id) return ctx.forbidden('Not yours');
 
     const body = ctx.request.body?.data || {};
     body.users_permissions_user = user.id;
 
-    const entry = await strapi.entityService.update(
-      "api::food-log.food-log", existing[0].id, {
-        data: body,
-        populate: ["users_permissions_user"]
-      }
-    );
-    return entry;
+    const entry = await strapi.documents('api::food-log.food-log').update({
+      documentId: id,
+      data: body,
+      populate: ['users_permissions_user'],
+    });
+    return { data: entry };
   },
 
   async delete(ctx) {
@@ -93,17 +92,16 @@ export default factories.createCoreController('api::food-log.food-log', ({ strap
     if (!user) return ctx.unauthorized('Login required');
     const { id } = ctx.params;
 
-    // Verify ownership
-    const existing = await strapi.entityService.findMany(
-      "api::food-log.food-log", {
-        filters: { documentId: id, users_permissions_user: user.id },
-      }
-    );
-    if (!existing.length) return ctx.notFound("Not found or not yours");
+    const existing = await strapi.documents('api::food-log.food-log').findOne({
+      documentId: id,
+      populate: ['users_permissions_user'],
+    });
+    if (!existing) return ctx.notFound('Not found');
+    if ((existing as any).users_permissions_user?.id !== user.id) return ctx.forbidden('Not yours');
 
-    const entry = await strapi.entityService.delete(
-      "api::food-log.food-log", existing[0].id
-    );
-    return entry;
+    const entry = await strapi.documents('api::food-log.food-log').delete({
+      documentId: id,
+    });
+    return { data: entry };
   },
 }));

@@ -88,11 +88,11 @@ const Profile = () => {
         <Card>
           {/* Card title */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="size-12 rounded-xl bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+            <div className="size-12 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-violet-500/20">
               <User className="size-6 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Your Profile</h2>
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">{user?.username || 'Your Profile'}</h2>
               <p className="text-slate-500 dark:text-slate-400 text-xs">
                 Member since {new Date(user?.createdAt || '').toLocaleDateString()}
               </p>
@@ -100,7 +100,7 @@ const Profile = () => {
           </div>
 
           {isEditing ? (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fade-in">
               <Input label="Age" type="number" value={formData.age}
                 onChange={(v) => setFormData({ ...formData, age: Number(v) })}
                 min={13} max={120} />
@@ -140,11 +140,11 @@ const Profile = () => {
             </div>
           ) : (
             <>
-              <div className="space-y-4">
+              <div className="space-y-3 stagger-children">
                 {/* Age */}
-                <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors duration-200">
-                  <div className="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
-                    <Calendar className="size-4.5 text-blue-600 dark:text-blue-400" />
+                <div className="profile-info-row">
+                  <div className="size-10 rounded-lg bg-cyan-500/10 dark:bg-cyan-500/15 flex items-center justify-center">
+                    <Calendar className="size-4.5 text-cyan-500" />
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Age</p>
@@ -153,9 +153,9 @@ const Profile = () => {
                 </div>
 
                 {/* Weight */}
-                <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors duration-200">
-                  <div className="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
-                    <Scale className="size-4.5 text-purple-600 dark:text-purple-400" />
+                <div className="profile-info-row">
+                  <div className="size-10 rounded-lg bg-violet-500/10 dark:bg-violet-500/15 flex items-center justify-center">
+                    <Scale className="size-4.5 text-violet-500" />
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Weight</p>
@@ -165,9 +165,9 @@ const Profile = () => {
 
                 {/* Height */}
                 {user.height !== undefined && user.height !== 0 && (
-                  <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors duration-200">
-                    <div className="size-10 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
-                      <User className="size-4.5 text-green-600 dark:text-green-400" />
+                  <div className="profile-info-row">
+                    <div className="size-10 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/15 flex items-center justify-center">
+                      <User className="size-4.5 text-emerald-500" />
                     </div>
                     <div>
                       <p className="text-sm text-slate-500 dark:text-slate-400">Height</p>
@@ -177,9 +177,9 @@ const Profile = () => {
                 )}
 
                 {/* Goal */}
-                <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors duration-200">
-                  <div className="size-10 rounded-lg bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center">
-                    <Target className="size-4.5 text-orange-600 dark:text-orange-400" />
+                <div className="profile-info-row">
+                  <div className="size-10 rounded-lg bg-amber-500/10 dark:bg-amber-500/15 flex items-center justify-center">
+                    <Target className="size-4.5 text-amber-500" />
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Goal</p>
@@ -203,12 +203,12 @@ const Profile = () => {
           <Card>
             <h3 className="font-semibold text-slate-800 dark:text-white mb-4">Your Stats</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-xl">
-                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{stats.totalFoodEntries}</p>
+              <div className="text-center p-4 bg-violet-500/10 dark:bg-violet-500/10 rounded-xl border border-violet-500/10">
+                <p className="text-2xl font-bold text-violet-600 dark:text-violet-400">{stats.totalFoodEntries}</p>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Food entries</p>
               </div>
-              <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/10 rounded-xl">
-                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.totalActivities}</p>
+              <div className="text-center p-4 bg-cyan-500/10 dark:bg-cyan-500/10 rounded-xl border border-cyan-500/10">
+                <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{stats.totalActivities}</p>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Activities</p>
               </div>
             </div>
@@ -218,14 +218,14 @@ const Profile = () => {
           <div className="lg:hidden">
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-3 px-4 py-2.5 w-full text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg transition-colors duration-200 cursor-pointer">
+              className="flex items-center gap-3 px-4 py-2.5 w-full text-slate-500 dark:text-slate-400 hover:bg-white/80 dark:hover:bg-white/[0.05] hover:text-slate-700 dark:hover:text-slate-200 rounded-xl transition-all duration-300 cursor-pointer">
               {theme === 'light' ? <MoonIcon className="size-5" /> : <SunIcon className="size-5" />}
               <span className="text-base">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
             </button>
           </div>
 
           {/* Logout button */}
-          <Button variant="danger" onClick={logout} className="w-full ring ring-red-300 hover:ring-2">
+          <Button variant="danger" onClick={logout} className="w-full">
             <LogOutIcon className="size-4" />
             Logout
           </Button>

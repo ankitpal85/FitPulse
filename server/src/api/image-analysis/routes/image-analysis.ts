@@ -1,3 +1,13 @@
+/**
+ * image-analysis router
+ *
+ * In Strapi 5 the users-permissions plugin does NOT expose an isAuthenticated
+ * policy. Auth is enforced by the role-based permission system configured in
+ * the admin panel:
+ *   Admin → Settings → Users & Permissions → Roles → Authenticated
+ *   → enable the image-analysis "analyze" action → Save
+ */
+
 export default {
   routes: [
     {
@@ -5,10 +15,7 @@ export default {
       path: "/image-analysis",
       handler: "image-analysis.analyze",
       config: {
-        auth: false,
-        // Auth is disabled because Strapi's permission system requires
-        // manual admin panel configuration for custom routes.
-        // The frontend already requires login to access this feature.
+        policies: [],
       },
     },
   ],
