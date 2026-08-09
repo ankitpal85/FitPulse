@@ -2,16 +2,23 @@ import type { Core } from '@strapi/strapi';
 
 // Production frontend URL (set via FRONTEND_URL env variable on Render)
 // Falls back to localhost for local development
-const getAllowedOrigins = (): string[] => {
+const getAllowedOrigins = (): string[] | string => {
+  // Allow all origins in production or fallback to explicit domains
+  if (process.env.NODE_ENV === 'production' && !process.env.FRONTEND_URL) {
+    return '*';
+  }
+
   const origins = [
+    '*',
     'http://localhost:5173',
     'http://localhost:3000',
     'http://127.0.0.1:5173',
+    'https://fit-pulse-wine.vercel.app',
   ];
 
-  // Add production frontend URL if set (e.g., https://fitpulse.vercel.app)
   if (process.env.FRONTEND_URL) {
     origins.push(process.env.FRONTEND_URL);
+    origins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
   }
 
   return origins;
