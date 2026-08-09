@@ -55,7 +55,8 @@ const Profile = () => {
         dailyCalorieBurn: formData.dailyCalorieBurn,
       };
 
-      await api.put(`/api/users/${user?.id}`, updates)
+      const targetId = user?.documentId || user?.id;
+      await api.put(`/api/users/${targetId}`, updates)
       await fetchUser(user?.token || '')
       toast.success('Profile updated successfully')
       setIsEditing(false)

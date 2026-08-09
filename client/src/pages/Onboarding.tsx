@@ -65,7 +65,8 @@ const Onboarding = () => {
           dailyCalorieBurn: formData.dailyCalorieBurn,
         };
 
-        await api.put(`/api/users/${user?.id}`, userData);
+        const targetId = user?.documentId || user?.id;
+        await api.put(`/api/users/${targetId}`, userData);
 
         toast.success("Profile updated successfully");
         setOnboardingCompleted(true);
