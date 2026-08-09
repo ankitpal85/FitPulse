@@ -13,13 +13,20 @@
 [![Gemini AI](https://img.shields.io/badge/Gemini-AI-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-fit--pulse--wine.vercel.app-7c3aed?style=for-the-badge&logo=vercel)](https://fit-pulse-wine.vercel.app)
+
+<br/>
+
+**🔗 Live Demo**: [https://fit-pulse-wine.vercel.app](https://fit-pulse-wine.vercel.app)  
+**⚡ Backend API**: `https://fitpulse-y2au.onrender.com`
+
 <br/>
 
 **FitPulse** is a full-stack fitness tracking web application that lets you log meals, track workouts, and use **Google Gemini AI** to analyze food photos — all in one sleek, responsive interface.
 
 <br/>
 
-[✨ Features](#-features) · [📸 Screenshots](#-screenshots) · [🛠 Tech Stack](#-tech-stack) · [🚀 Getting Started](#-getting-started) · [📁 Project Structure](#-project-structure)
+[🚀 Live Demo](https://fit-pulse-wine.vercel.app) · [✨ Features](#-features) · [📸 Screenshots](#-screenshots) · [🛠 Tech Stack](#-tech-stack) · [🚀 Getting Started](#-getting-started) · [📁 Project Structure](#-project-structure)
 
 </div>
 
